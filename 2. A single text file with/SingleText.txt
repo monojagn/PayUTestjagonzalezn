@@ -1,6 +1,10 @@
 a. The url of your postman collection
 
 https://www.postman.com/galactic-star-6062/workspace/testpu/collection/8804410-d3272d22-7af8-473d-bd33-b7b1b3ec42a7
+
+ +Check JAGONZALEZN - Refund
+ +Check JAGONZALEZN - Alternative Payment Methods
+ 
 https://www.getpostman.com/collections/6141dbbd53c84dbaa87c
 
 
