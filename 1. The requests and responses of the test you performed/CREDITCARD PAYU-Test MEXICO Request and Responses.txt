@@ -1,0 +1,402 @@
+Card data
+- Card name: Test
+- Card number: 4097440000000004
+- Card expiration date: 2030 (year) 06 (month)
+- Card security code: 777
+*************************************************************************************************************************************************************
+*************************************************************************************************************************************************************
+1. CREATE TOKEN
+
+POST https://api.paymentsos.com/tokens: {
+   
+  "Request Headers": {
+    "app_id": "COM.JAGONZALEZN.businessmexico",
+    "public_key": "6a5a534c-dbf3-449f-887d-98d499e3b5b8",
+    "content-type": "application/json",
+    "api-version": "1.3.0",
+    "x-payments-os-env": "test",
+    "user-agent": "PostmanRuntime/7.28.3",
+    "accept": "*/*",
+    "cache-control": "no-cache",
+    "postman-token": "f2bc60b5-f35d-4fcb-a3fc-71f95029236a",
+    "host": "api.paymentsos.com",
+    "accept-encoding": "gzip, deflate, br",
+    "connection": "keep-alive",
+    "content-length": "214"
+  },
+  "Request Body": 
+  
+   {
+  "token_type": "credit_card",
+  "credit_card_cvv": "777",
+  "card_number": "4097440000000004",
+  "expiration_date": "06/30",
+  "holder_name": "Juan Mexico",
+  "billing_address": {
+    "country": "MEX" 
+   
+  }
+}
+
+  "Response Headers": {
+    "content-type": "application/json; charset=utf-8",
+    "self": "https://api.paymentsos.com/tokens/ac6d49fb-a058-403d-97e1-597e452df9ec",
+    "etag": "W/\"2a2-ju1qmBR2D1CSRZE5oPQpUWnVZm8\"",
+    "x-zooz-request-id": "70d3321c-679d-4461-a392-d9c096ba142b",
+    "vary": "Accept-Encoding",
+    "content-encoding": "gzip",
+    "content-length": "607",
+    "date": "Mon, 06 Sep 2021 03:30:02 GMT",
+    "connection": "keep-alive",
+    "access-control-allow-headers": "origin, x-requested-with, accept, x-payments-os-env, content-type, idempotency_key, app_id, x-client-user-agent, x-client-ip-address, public_key, private_key, x-zooz-account-id, authorization, api-version",
+    "access-control-max-age": "86400",
+    "access-control-allow-credentials": "false",
+    "access-control-allow-methods": "GET,POST,PUT,DELETE,PATCH",
+    "access-control-allow-origin": "*"
+  },
+  "Response Body": 
+  
+  {
+    "token": "ac6d49fb-a058-403d-97e1-597e452df9ec",
+    "created": "1630899001904",
+    "pass_luhn_validation": true,
+    "token_type": "credit_card",
+    "type": "tokenized",
+    "state": "created",
+    "bin_number": "409744",
+    "vendor": "VISA",
+    "card_type": "CREDIT",
+    "issuer": "BANCO COLPATRIA - RED MULTIBANCA COLPATRIA, S.A.",
+    "level": "CLASSIC",
+    "country_code": "COL",
+    "billing_address": {
+        "country": "MEX"
+    },
+    "holder_name": "Juan Mexico",
+    "expiration_date": "06/2030",
+    "last_4_digits": "0004",
+    "encrypted_cvv": "NDQwNTA4OGItMzkwOS00ZDI2LWE3YzktYzc4ZjdkZTMzNmM2Y3Z2X2RlbGltaXRlcnZhdWx0OnY0OmRqc0xoTVJpQjdsRmJ3Qm9jRlIrYzRJbXI4bTJHbjZ5RXk3cVdVbFdwQnplZjhpYlpWM1IwQ3VEdHlIY2ZiYUJuNEdONml2QVZuUU8xWlkyazN2a1RYUm9mTThzVGRrR21SQjNCb3h5"
+}
+}
+  
+*************************************************************************************************************************************************************
+*************************************************************************************************************************************************************
+2. CREATE PAYMENT
+
+POST https://api.paymentsos.com/payments: {
+   
+  "Request Headers": {
+    "app_id": "COM.JAGONZALEZN.businessmexico",
+    "private_key": "04bf619a-dcef-46fa-952e-4c4658cf50d3",
+    "content-type": "application/json",
+    "api-version": "1.3.0",
+    "x-payments-os-env": "test",
+    "idempotency_key": "46",
+    "user-agent": "PostmanRuntime/7.28.3",
+    "accept": "*/*",
+    "cache-control": "no-cache",
+    "postman-token": "ad77db0a-730d-4534-88f4-f658ade0b0da",
+    "host": "api.paymentsos.com",
+    "accept-encoding": "gzip, deflate, br",
+    "connection": "keep-alive",
+    "content-length": "186"
+  },
+  "Request Body": 
+  
+  {
+  "amount": 30000,
+  "currency": "MXN",
+  "statement_soft_descriptor":"33",
+  "billing_address": {
+    "phone": "+1-541-754-3010"
+  },
+  "order": {
+    "id": "iiii09052031MMMM01"
+  }
+}
+  
+  "Response Headers": {
+    "content-type": "application/json; charset=utf-8",
+    "self": "https://api.paymentsos.com/payments/ca923e78-c5e5-42f3-b985-ed41f46342f9",
+    "etag": "W/\"3f9-qZYAv1VBsLXOG0q8xY21xpRf1W0\"",
+    "x-zooz-request-id": "d77a7d63-c0a4-4327-a137-b5e3d0682cac",
+    "vary": "Accept-Encoding",
+    "content-encoding": "gzip",
+    "content-length": "430",
+    "date": "Mon, 06 Sep 2021 03:30:56 GMT",
+    "connection": "keep-alive",
+    "access-control-allow-headers": "origin, x-requested-with, accept, x-payments-os-env, content-type, idempotency_key, app_id, x-client-user-agent, x-client-ip-address, public_key, private_key, x-zooz-account-id, authorization, api-version",
+    "access-control-max-age": "86400",
+    "access-control-allow-credentials": "false",
+    "access-control-allow-methods": "GET,POST,PUT,DELETE,PATCH",
+    "access-control-allow-origin": "*"
+  },
+  "Response Body": 
+  
+  {
+    "id": "ca923e78-c5e5-42f3-b985-ed41f46342f9",
+    "currency": "MXN",
+    "created": "1630899056575",
+    "modified": "1630899056575",
+    "statement_soft_descriptor": "33",
+    "is_disputed": false,
+    "status": "Initialized",
+    "billing_address": {
+        "phone": "+1-541-754-3010"
+    },
+    "possible_next_actions": [
+        {
+            "action": "Credit",
+            "href": "https://api.paymentsos.com/payments/ca923e78-c5e5-42f3-b985-ed41f46342f9/credits"
+        },
+        {
+            "action": "Charge",
+            "href": "https://api.paymentsos.com/payments/ca923e78-c5e5-42f3-b985-ed41f46342f9/charges"
+        },
+        {
+            "action": "Authorization",
+            "href": "https://api.paymentsos.com/payments/ca923e78-c5e5-42f3-b985-ed41f46342f9/authorizations"
+        },
+        {
+            "action": "Update Payment",
+            "href": "https://api.paymentsos.com/payments/ca923e78-c5e5-42f3-b985-ed41f46342f9"
+        },
+        {
+            "action": "Authentication",
+            "href": "https://api.paymentsos.com/payments/ca923e78-c5e5-42f3-b985-ed41f46342f9/authentications"
+        },
+        {
+            "action": "Risk analysis",
+            "href": "https://api.paymentsos.com/payments/ca923e78-c5e5-42f3-b985-ed41f46342f9/risk-analyses"
+        }
+    ],
+    "order": {
+        "id": "iiii09052031MMMM01"
+    },
+    "amount": 30000
+}
+}
+
+*************************************************************************************************************************************************************
+*************************************************************************************************************************************************************
+3. CREATE CHARGE
+
+POST https://api.paymentsos.com/payments/ca923e78-c5e5-42f3-b985-ed41f46342f9/charges: {
+   
+  "Request Headers": {
+    "app_id": "COM.JAGONZALEZN.businessmexico",
+    "private_key": "04bf619a-dcef-46fa-952e-4c4658cf50d3",
+    "content-type": "application/json",
+    "api-version": "1.3.0",
+    "x-payments-os-env": "test",
+    "idempotency_key": "231",
+    "user-agent": "PostmanRuntime/7.28.3",
+    "accept": "*/*",
+    "cache-control": "no-cache",
+    "postman-token": "5f27a3cf-7262-49f7-8336-b8b7eb4ed240",
+    "host": "api.paymentsos.com",
+    "accept-encoding": "gzip, deflate, br",
+    "connection": "keep-alive",
+    "content-length": "200"
+  },
+  "Request Body":
+  
+   {
+    "reconciliation_id": "Mexnzalezn9599XJ62",
+    "payment_method": {
+        "credit_card_cvv": "777",
+        "type": "tokenized",
+        "token": "ac6d49fb-a058-403d-97e1-597e452df9ec"
+    } 
+} 
+ 
+  "Response Headers": {
+    "content-type": "application/json; charset=utf-8",
+    "self": "https://api.paymentsos.com/payments/ca923e78-c5e5-42f3-b985-ed41f46342f9/charges/ff72a01d-7166-4214-81ed-728911ebdf50",
+    "etag": "W/\"c5e-yrTmLt3ZAwLvJRxvt9h1+lUavrU\"",
+    "x-zooz-request-id": "edc8dc43-40e2-4904-83bb-adaef3c75cb0",
+    "vary": "Accept-Encoding",
+    "content-encoding": "gzip",
+    "content-length": "1570",
+    "date": "Mon, 06 Sep 2021 03:33:12 GMT",
+    "connection": "keep-alive",
+    "access-control-allow-headers": "origin, x-requested-with, accept, x-payments-os-env, content-type, idempotency_key, app_id, x-client-user-agent, x-client-ip-address, public_key, private_key, x-zooz-account-id, authorization, api-version",
+    "access-control-max-age": "86400",
+    "access-control-allow-credentials": "false",
+    "access-control-allow-methods": "GET,POST,PUT,DELETE,PATCH",
+    "access-control-allow-origin": "*"
+  },
+  "Response Body": 
+  
+  {
+    "id": "ff72a01d-7166-4214-81ed-728911ebdf50",
+    "created": "1630899191985",
+    "reconciliation_id": "Mexnzalezn9599XJ62",
+    "payment_method": {
+        "type": "tokenized",
+        "token": "ac6d49fb-a058-403d-97e1-597e452df9ec",
+        "token_type": "credit_card",
+        "holder_name": "Juan Mexico",
+        "expiration_date": "06/2030",
+        "last_4_digits": "0004",
+        "pass_luhn_validation": true,
+        "fingerprint": "9ae37378-70b0-41d9-9784-436f7041eaa7",
+        "bin_number": "409744",
+        "vendor": "VISA",
+        "issuer": "BANCO COLPATRIA - RED MULTIBANCA COLPATRIA, S.A.",
+        "card_type": "CREDIT",
+        "level": "CLASSIC",
+        "country_code": "COL",
+        "created": "1630899001904",
+        "billing_address": {
+            "country": "MEX"
+        }
+    },
+    "result": {
+        "status": "Succeed"
+    },
+    "provider_data": {
+        "provider_name": "PayULatam",
+        "response_code": "APPROVED",
+        "description": "APPROVED",
+        "raw_response": "{\"authorizationCode\":\"595641\",\"responseCode\":\"APPROVED\",\"PAYMENT_WAY_ID\":\"4\",\"state\":\"APPROVED\",\"BANK_REFERENCED_CODE\":\"CREDIT\",\"orderId\":\"1400970236\",\"operationDate\":\"1630881191905\",\"responseMessage\":\"Aprobada\",\"additionalInfo\":\"{\\\"responseNetworkMessage\\\":null,\\\"transactionType\\\":\\\"AUTHORIZATION_AND_CAPTURE\\\",\\\"paymentNetwork\\\":\\\"BANCOMER\\\",\\\"rejectionType\\\":\\\"NONE\\\",\\\"cardType\\\":\\\"CREDIT\\\",\\\"travelAgencyAuthorizationCode\\\":null}\",\"paymentNetworkResponseCode\":\"00\",\"extraParameters\":\"{\\\"BANK_REFERENCED_CODE\\\":\\\"CREDIT\\\",\\\"EXPIRATION_DATE\\\":1631503980000,\\\"PAYMENT_WAY_ID\\\":\\\"4\\\"}\",\"EXPIRATION_DATE\":\"1631503980000\",\"transactionId\":\"bcbf7e41-4585-461e-9377-25901c038631\"}",
+        "authorization_code": "595641",
+        "transaction_id": "bcbf7e41-4585-461e-9377-25901c038631",
+        "external_id": "1400970236"
+    },
+    "amount": 30000,
+    "provider_configuration": {
+        "id": "71f2c0dc-30ba-4b9f-8ba2-f896fada9b54",
+        "name": "PAYUMEXICO",
+        "description": "PAYUMEXICO",
+        "created": "1630754553518",
+        "modified": "1630754553518",
+        "account_id": "5d8cfab3-2f1d-4288-82bb-f1316f3b9623",
+        "provider_id": "3d9cb628-a5cd-49e2-b455-e46b10d7b6f3",
+        "type": "cc_processor",
+        "href": "https://api.paymentsos.com/accounts/5d8cfab3-2f1d-4288-82bb-f1316f3b9623/provider-configurations/71f2c0dc-30ba-4b9f-8ba2-f896fada9b54"
+    },
+    "decision_engine_execution": {
+        "id": "b5fe81d1-bb31-4fa6-be3d-0a9b75af0b3c",
+        "flow_id": "6b9f1a7c-faaf-415b-86ad-9d5521868974",
+        "created": "2021-09-06T03:33:05.747Z",
+        "status": "Completed",
+        "policy_results": [
+            {
+                "type": "SelectionPolicy",
+                "name": "MEX",
+                "execution_time": "2021-09-06T03:33:05.783465Z",
+                "result": "Hit",
+                "provider_name": "PayULatam",
+                "provider_configuration": "https://api.paymentsos.com/accounts/5d8cfab3-2f1d-4288-82bb-f1316f3b9623/providers-configurations/71f2c0dc-30ba-4b9f-8ba2-f896fada9b54",
+                "transaction": "https://api.paymentsos.com/payments/ca923e78-c5e5-42f3-b985-ed41f46342f9/charges/ff72a01d-7166-4214-81ed-728911ebdf50"
+            },
+            {
+                "type": "TargetPolicy",
+                "name": "TargetPolicy",
+                "execution_time": "2021-09-06T03:33:12.106721Z",
+                "result": "Hit",
+                "provider_name": "PayULatam",
+                "provider_configuration": "https://api.paymentsos.com/accounts/5d8cfab3-2f1d-4288-82bb-f1316f3b9623/providers-configurations/71f2c0dc-30ba-4b9f-8ba2-f896fada9b54",
+                "transaction": "https://api.paymentsos.com/payments/ca923e78-c5e5-42f3-b985-ed41f46342f9/charges/ff72a01d-7166-4214-81ed-728911ebdf50"
+            }
+        ]
+    }
+}  
+}
+ 
+
+*************************************************************************************************************************************************************
+*************************************************************************************************************************************************************
+4. CREATE REFUND
+ 
+POST https://api.paymentsos.com/payments/ca923e78-c5e5-42f3-b985-ed41f46342f9/refunds: {
+   
+  "Request Headers": {
+    "app_id": "COM.JAGONZALEZN.businessmexico",
+    "private_key": "04bf619a-dcef-46fa-952e-4c4658cf50d3",
+    "content-type": "application/json",
+    "api-version": "1.3.0",
+    "x-payments-os-env": "test",
+    "idempotency_key": "889",
+    "user-agent": "PostmanRuntime/7.28.3",
+    "accept": "*/*",
+    "cache-control": "no-cache",
+    "postman-token": "d4958e2b-abce-48d8-a58b-b3b52104a10d",
+    "host": "api.paymentsos.com",
+    "accept-encoding": "gzip, deflate, br",
+    "connection": "keep-alive",
+    "content-length": "274"
+  },
+  "Request Body":
+
+   {
+    "reconciliation_id": "3gonzalezn977",
+    "amount":30000,
+    "capture_id":"wonzaleznCapture977",
+    "refund_reason":"Test",
+    "additional_details": {
+    "property1": "The details you specify 1",
+    "property2": "The details you specify 2"
+    }
+     
+  }
+
+
+  "Response Headers": {
+    "content-type": "application/json; charset=utf-8",
+    "self": "https://api.paymentsos.com/payments/ca923e78-c5e5-42f3-b985-ed41f46342f9/refunds/d7992c60-130c-4056-8090-4e56a35575ad",
+    "etag": "W/\"73d-VLKLQpelNp0LdjCfMw5AMiLNeg0\"",
+    "x-zooz-request-id": "2959e692-4c81-46aa-9f9b-33aa40353f33",
+    "vary": "Accept-Encoding",
+    "content-encoding": "gzip",
+    "content-length": "1026",
+    "date": "Mon, 06 Sep 2021 03:34:48 GMT",
+    "connection": "keep-alive",
+    "access-control-allow-headers": "origin, x-requested-with, accept, x-payments-os-env, content-type, idempotency_key, app_id, x-client-user-agent, x-client-ip-address, public_key, private_key, x-zooz-account-id, authorization, api-version",
+    "access-control-max-age": "86400",
+    "access-control-allow-credentials": "false",
+    "access-control-allow-methods": "GET,POST,PUT,DELETE,PATCH",
+    "access-control-allow-origin": "*"
+  },
+  "Response Body": 
+  
+   {
+    "id": "d7992c60-130c-4056-8090-4e56a35575ad",
+    "created": "1630899288790",
+    "reconciliation_id": "3gonzalezn977",
+    "result": {
+        "status": "Succeed"
+    },
+    "capture_id": "wonzaleznCapture977",
+    "reason": "Test",
+    "additional_details": {
+        "property1": "The details you specify 1",
+        "property2": "The details you specify 2"
+    },
+    "provider_data": {
+        "provider_name": "PayULatam",
+        "response_code": "APPROVED",
+        "description": "APPROVED",
+        "raw_response": "{\"authorizationCode\":\"381437\",\"responseCode\":\"APPROVED\",\"PAYMENT_WAY_ID\":\"4\",\"state\":\"APPROVED\",\"BANK_REFERENCED_CODE\":\"CREDIT\",\"orderId\":\"1400970236\",\"operationDate\":\"1630881288710\",\"pendingReason\":null,\"paymentNetworkResponseErrorMessage\":null,\"errorCode\":null,\"responseMessage\":\"Aprobada\",\"referenceQuestionnaire\":null,\"additionalInfo\":\"{\\\"responseNetworkMessage\\\":null,\\\"transactionType\\\":\\\"REFUND\\\",\\\"paymentNetwork\\\":\\\"BANCOMER\\\",\\\"rejectionType\\\":\\\"NONE\\\",\\\"cardType\\\":null,\\\"travelAgencyAuthorizationCode\\\":null}\",\"trazabilityCode\":null,\"transactionDate\":null,\"transactionTime\":null,\"paymentNetworkResponseCode\":\"00\",\"extraParameters\":\"{\\\"BANK_REFERENCED_CODE\\\":\\\"CREDIT\\\",\\\"PAYMENT_WAY_ID\\\":\\\"4\\\"}\",\"transactionId\":\"1894b720-d69d-4d76-9a20-ffc30626f12f\"}",
+        "authorization_code": "381437",
+        "transaction_id": "1894b720-d69d-4d76-9a20-ffc30626f12f",
+        "external_id": "1400970236"
+    },
+    "amount": 30000,
+    "provider_configuration": {
+        "id": "71f2c0dc-30ba-4b9f-8ba2-f896fada9b54",
+        "name": "PAYUMEXICO",
+        "description": "PAYUMEXICO",
+        "created": "1630754553518",
+        "modified": "1630754553518",
+        "account_id": "5d8cfab3-2f1d-4288-82bb-f1316f3b9623",
+        "provider_id": "3d9cb628-a5cd-49e2-b455-e46b10d7b6f3",
+        "type": "cc_processor",
+        "href": "https://api.paymentsos.com/accounts/5d8cfab3-2f1d-4288-82bb-f1316f3b9623/provider-configurations/71f2c0dc-30ba-4b9f-8ba2-f896fada9b54"
+    }
+}  
+}
+  
+*************************************************************************************************************************************************************
+*************************************************************************************************************************************************************

@@ -1,0 +1,123 @@
+Card data
+- Card name: Test
+- Card number: 4097440000000004
+- Card expiration date: 2030 (year) 06 (month)
+- Card security code: 777
+*************************************************************************************************************************************************************
+*************************************************************************************************************************************************************
+1. CREATE PAYMENT
+
+POST https://api.paymentsos.com/payments: {
+  
+   POST https://api.paymentsos.com/payments: {
+  
+  "Request Headers": {
+    "app_id": "COM.JAGONZALEZN.businessmexico",
+    "private_key": "04bf619a-dcef-46fa-952e-4c4658cf50d3",
+    "content-type": "application/json",
+    "api-version": "1.3.0",
+    "x-payments-os-env": "test",
+    "idempotency_key": "403",
+    "user-agent": "PostmanRuntime/7.28.3",
+    "accept": "*/*",
+    "cache-control": "no-cache",
+    "postman-token": "f4d94fe0-b88d-471d-b078-8c51ccc3ec09",
+    "host": "api.paymentsos.com",
+    "accept-encoding": "gzip, deflate, br",
+    "connection": "keep-alive",
+    "content-length": "41"
+  },
+  "Request Body": "{\n  \"amount\": 4097,\n  \"currency\": \"USD\"\n}",
+  "Response Headers": {
+    "content-type": "application/json; charset=utf-8",
+    "self": "https://api.paymentsos.com/payments/213c2784-ba9c-4aa7-9d94-8a8c4a015f6c",
+    "etag": "W/\"385-zXsoD75SqsEQggIuVAoA7JrJi4w\"",
+    "x-zooz-request-id": "3a758e3d-8ec9-43d9-9d34-37569e477f51",
+    "vary": "Accept-Encoding",
+    "content-encoding": "gzip",
+    "content-length": "335",
+    "date": "Mon, 06 Sep 2021 04:12:29 GMT",
+    "connection": "keep-alive",
+    "access-control-allow-headers": "origin, x-requested-with, accept, x-payments-os-env, content-type, idempotency_key, app_id, x-client-user-agent, x-client-ip-address, public_key, private_key, x-zooz-account-id, authorization, api-version",
+    "access-control-max-age": "86400",
+    "access-control-allow-credentials": "false",
+    "access-control-allow-methods": "GET,POST,PUT,DELETE,PATCH",
+    "access-control-allow-origin": "*"
+  },
+  "Response Body": 
+
+  {
+    "id": "213c2784-ba9c-4aa7-9d94-8a8c4a015f6c",
+    "currency": "USD",
+    "created": "1630901549756",
+    "modified": "1630901549756",
+    "is_disputed": false,
+    "status": "Initialized",
+    "possible_next_actions": [
+        {
+            "action": "Credit",
+            "href": "https://api.paymentsos.com/payments/213c2784-ba9c-4aa7-9d94-8a8c4a015f6c/credits"
+        },
+        {
+            "action": "Charge",
+            "href": "https://api.paymentsos.com/payments/213c2784-ba9c-4aa7-9d94-8a8c4a015f6c/charges"
+        },
+        {
+            "action": "Authorization",
+            "href": "https://api.paymentsos.com/payments/213c2784-ba9c-4aa7-9d94-8a8c4a015f6c/authorizations"
+        },
+        {
+            "action": "Update Payment",
+            "href": "https://api.paymentsos.com/payments/213c2784-ba9c-4aa7-9d94-8a8c4a015f6c"
+        },
+        {
+            "action": "Authentication",
+            "href": "https://api.paymentsos.com/payments/213c2784-ba9c-4aa7-9d94-8a8c4a015f6c/authentications"
+        },
+        {
+            "action": "Risk analysis",
+            "href": "https://api.paymentsos.com/payments/213c2784-ba9c-4aa7-9d94-8a8c4a015f6c/risk-analyses"
+        }
+    ],
+    "amount": 4097
+}  
+}
+*************************************************************************************************************************************************************
+*************************************************************************************************************************************************************
+
+2. CREATE CHARGE
+
+POST https://api.paymentsos.com/payments/c5ae222f-bb16-4495-8d54-cc9bf8200ea0/charges: {
+   
+  "Request Headers": {
+    "app_id": "COM.JAGONZALEZN.businessmexico",
+    "private_key": "04bf619a-dcef-46fa-952e-4c4658cf50d3",
+    "content-type": "application/json",
+    "api-version": "1.3.0",
+    "x-payments-os-env": "test",
+    "idempotency_key": "662",
+    "user-agent": "PostmanRuntime/7.28.3",
+    "accept": "*/*",
+    "cache-control": "no-cache",
+    "postman-token": "409ff654-7c56-492c-ae19-7fbf7cc7736f",
+    "host": "api.paymentsos.com",
+    "accept-encoding": "gzip, deflate, br",
+    "connection": "keep-alive",
+    "content-length": "234"
+  },
+  "Request Body": "{\n  \"reconciliation_id\": \"4434E322RE311134\",\n  \"payment_method\": {\n    \"source_type\": \"ewallet\",\n    \"type\": \"untokenized\",\n    \"vendor\": \"applepay\",\n    \"additional_details\": {\n      \"untokenized_result_status\": \"succeed\"\n    }\n  }\n}",
+  "Response Headers": {
+    "content-type": "application/json; charset=utf-8",
+    "etag": "W/\"2a-JENKXGOtVEMc3vM0fCwyR6mEcLU\"",
+    "x-zooz-request-id": "8d4840a6-abe2-40cb-a29a-281976bf2fb5",
+    "content-length": "135",
+    "date": "Mon, 06 Sep 2021 04:13:22 GMT",
+    "connection": "close",
+    "access-control-allow-headers": "origin, x-requested-with, accept, x-payments-os-env, content-type, idempotency_key, app_id, x-client-user-agent, x-client-ip-address, public_key, private_key, x-zooz-account-id, authorization, api-version",
+    "access-control-max-age": "86400",
+    "access-control-allow-credentials": "false",
+    "access-control-allow-methods": "GET,POST,PUT,DELETE,PATCH",
+    "access-control-allow-origin": "*"
+  },
+  "Response Body": "{\"more_info\":\"payment_method_token missing\",\"category\":\"api_request_error\",\"description\":\"One or more request parameters are invalid.\"}"
+}

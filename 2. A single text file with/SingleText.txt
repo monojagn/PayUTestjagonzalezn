@@ -1,0 +1,42 @@
+a. The url of your postman collection
+
+https://www.postman.com/galactic-star-6062/workspace/testpu/collection/8804410-d3272d22-7af8-473d-bd33-b7b1b3ec42a7
+https://www.getpostman.com/collections/6141dbbd53c84dbaa87c
+
+
+b. The responses for the 2nd and 3rd point
+
+*************ADQUIRING BANK***********
+
+An acquiring bank assists with the exchange of funds between banks that issue cards  and merchants that accept the cards.
+
+*************PCI-DSS******************
+
+It is a security standard that defines policies to protect sensitive information on credit and debit cards. 
+It should be used by companies that process credit or debit card data.
+
+***********Describe a solution or a possible path for the following case**********
+
+
+1. You have an important merchant assigned, they notify you about an error they
+found that is a blocker to start processing transactions tomorrow and if it is not
+solved, they will break the deal with us, what would you do?
+
+First, you have to have empathy and you must understand the customer's annoyance. What they call, putting ourselves in his shoes. For this, 
+I would attend their complaint in a polite way and always trying to maintain a constructive dialogue.
+
+Second, we have to check if the clauses and the ANS allow breaking the contract due to this kind of problems. Always we  have to check the contracts and ANS
+
+Third and one of the most important thing, it´s to show interest to solve the problem so that he can start his operation. 
+We have been working together, we are closer to finding the solution  and it would not be convenient to seek to break the contract.
+
+Also and very politely, we would ask why 1 day before  going into production we are in a problem like the one mentioned. 
+Was it because it was not properly tested? What was missing and where was it missing? 
+Perhaps this will help the client to reason in case the failures presented are due to their team.
+
+
+
+********************************c. The zooz account id******************
+
+JAGONZALEZN Account ID:
+5d8cfab3-2f1d-4288-82bb-f1316f3b9623

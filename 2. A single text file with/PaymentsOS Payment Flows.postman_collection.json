@@ -1,0 +1,1666 @@
+{
+	"info": {
+		"_postman_id": "d3272d22-7af8-473d-bd33-b7b1b3ec42a7",
+		"name": "PaymentsOS Payment Flows",
+		"description": "Use this collection to run 1-Step and 2-Step payment flows.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authorize-Capture (2-Step Flow)",
+			"item": [
+				{
+					"name": "1. Create Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "{{app_id}}",
+								"type": "text"
+							},
+							{
+								"key": "public_key",
+								"value": "{{public_key}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0",
+								"type": "text"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token_type\": \"credit_card\",\n  \"credit_card_cvv\": \"777\",\n  \"card_number\": \"4097440000000004\",\n  \"expiration_date\": \"06/30\",\n  \"holder_name\": \"John Mark\",\n  \"billing_address\": {\n    \"country\": \"USA\",\n    \"state\": \"NY\",\n    \"city\": \"NYC\",\n    \"line1\": \"fifth avenue 10th\"\n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/tokens",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"tokens"
+							]
+						},
+						"description": "Create a new payment token"
+					},
+					"response": []
+				},
+				{
+					"name": "2. Create Payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"paymentid\", jsonData.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "{{app_id}}"
+							},
+							{
+								"key": "private_key",
+								"value": "{{private_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 4097,\n  \"currency\": \"EUR\",\n  \"billing_address\": {\n    \"phone\": \"+1-541-754-3010\"\n  },\n  \"order\": {\n    \"id\": \"myorderid\"\n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments"
+							]
+						},
+						"description": "Create a new payment"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Create Authorization",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "{{app_id}}"
+							},
+							{
+								"key": "private_key",
+								"value": "{{private_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"payment_method\": {\n    \"token\": \"{{token}}\",\n    \"type\": \"tokenized\",\n    \"credit_card_cvv\": \"123\"\n  },\n  \"reconciliation_id\": \"23434534534\"\n}\n"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments/{{paymentid}}/authorizations",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments",
+								"{{paymentid}}",
+								"authorizations"
+							]
+						},
+						"description": "Create a new authorization"
+					},
+					"response": []
+				},
+				{
+					"name": "4. Create Capture",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "{{app_id}}"
+							},
+							{
+								"key": "private_key",
+								"value": "{{private_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments/{{paymentid}}/captures",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments",
+								"{{paymentid}}",
+								"captures"
+							]
+						},
+						"description": "Create a new capture"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Charge (1-Step Flow)",
+			"item": [
+				{
+					"name": "1. Create Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "{{app_id}}"
+							},
+							{
+								"key": "public_key",
+								"value": "{{public_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token_type\": \"credit_card\",\n  \"credit_card_cvv\": \"123\",\n  \"card_number\": \"4111111111111111\",\n  \"expiration_date\": \"10/29\",\n  \"holder_name\": \"John Mark\",\n  \"billing_address\": {\n    \"country\": \"USA\",\n    \"state\": \"NY\",\n    \"city\": \"NYC\",\n    \"line1\": \"fifth avenue 10th\"\n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/tokens",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"tokens"
+							]
+						},
+						"description": "Create a new payment token"
+					},
+					"response": []
+				},
+				{
+					"name": "2. Create Payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"paymentid\", jsonData.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "{{app_id}}"
+							},
+							{
+								"key": "private_key",
+								"value": "{{private_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 4097,\n  \"currency\": \"EUR\",\n  \"billing_address\": {\n    \"phone\": \"+1-541-754-3010\"\n  },\n  \"order\": {\n    \"id\": \"myorderid\"\n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments"
+							]
+						},
+						"description": "Create a new payment"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Create Charge",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "{{app_id}}"
+							},
+							{
+								"key": "private_key",
+								"value": "{{private_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"payment_method\": {\n    \"type\": \"tokenized\",\n    \"token\": \"{{token}}\"\n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments/{{paymentid}}/charges",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments",
+								"{{paymentid}}",
+								"charges"
+							]
+						},
+						"description": "Create a new charge"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Credit",
+			"item": [
+				{
+					"name": "1. Create Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "{{app_id}}"
+							},
+							{
+								"key": "public_key",
+								"value": "{{public_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token_type\": \"credit_card\",\n  \"credit_card_cvv\": \"123\",\n  \"card_number\": \"4111111111111111\",\n  \"expiration_date\": \"10/29\",\n  \"holder_name\": \"John Mark\",\n  \"billing_address\": {\n    \"country\": \"USA\",\n    \"state\": \"NY\",\n    \"city\": \"NYC\",\n    \"line1\": \"fifth avenue 10th\"\n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/tokens",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"tokens"
+							]
+						},
+						"description": "Create a new payment token"
+					},
+					"response": []
+				},
+				{
+					"name": "2. Create Payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"paymentid\", jsonData.id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "{{app_id}}"
+							},
+							{
+								"key": "private_key",
+								"value": "{{private_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 4097,\n  \"currency\": \"EUR\",\n  \"billing_address\": {\n    \"phone\": \"+1-541-754-3010\"\n  },\n  \"order\": {\n    \"id\": \"myorderid\"\n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments"
+							]
+						},
+						"description": "Create a new payment"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Create Credit",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "{{app_id}}"
+							},
+							{
+								"key": "private_key",
+								"value": "{{private_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"payment_method\": {\n    \"token\": \"{{token}}\",\n    \"type\": \"tokenized\",\n    \"credit_card_cvv\": \"123\"\n  },\n  \"reconciliation_id\": \"23434534534\"\n}\n"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments/{{paymentid}}/credits",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments",
+								"{{paymentid}}",
+								"credits"
+							]
+						},
+						"description": "Create a new authorization"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "JAGONZALEZN-Refund",
+			"item": [
+				{
+					"name": "1. Create Token COL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "{{'app_id'}}"
+							},
+							{
+								"key": "public_key",
+								"value": "{{public_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token_type\": \"credit_card\",\n  \"credit_card_cvv\": \"777\",\n  \"card_number\": \"4097440000000004\",\n  \"expiration_date\": \"06/30\",\n  \"holder_name\": \"Juan Perez\",\n  \"billing_address\": {\n    \"country\": \"COL\" \n   \n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/tokens",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"tokens"
+							]
+						},
+						"description": "Create a new payment token"
+					},
+					"response": []
+				},
+				{
+					"name": "1. Create Token MEX",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "COM.JAGONZALEZN.businessmexico"
+							},
+							{
+								"key": "public_key",
+								"value": "6a5a534c-dbf3-449f-887d-98d499e3b5b8"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token_type\": \"credit_card\",\n  \"credit_card_cvv\": \"777\",\n  \"card_number\": \"4097440000000004\",\n  \"expiration_date\": \"06/30\",\n  \"holder_name\": \"Juan Mexico\",\n  \"billing_address\": {\n    \"country\": \"MEX\" \n   \n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/tokens",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"tokens"
+							]
+						},
+						"description": "Create a new payment token"
+					},
+					"response": []
+				},
+				{
+					"name": "2. Create Payment COL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"paymentid\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "COM.JAGONZALEZN.businesscolombia",
+								"type": "text"
+							},
+							{
+								"key": "private_key",
+								"value": "c286d8a8-5e37-4a0d-b752-3c240161498a",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0",
+								"type": "text"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}",
+								"type": "text"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 55555,\n  \"currency\": \"COP\",\n  \"statement_soft_descriptor\":\"55\",\n  \"billing_address\": {\n    \"phone\": \"3154520130\"\n  },\n  \"order\": {\n    \"id\": \"COL202109052031MMMM013\"\n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments"
+							]
+						},
+						"description": "Create a new payment"
+					},
+					"response": []
+				},
+				{
+					"name": "2. Create Payment MEX",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"paymentid\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "COM.JAGONZALEZN.businessmexico",
+								"type": "text"
+							},
+							{
+								"key": "private_key",
+								"value": "04bf619a-dcef-46fa-952e-4c4658cf50d3",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0",
+								"type": "text"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}",
+								"type": "text"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 30000,\n  \"currency\": \"MXN\",\n  \"statement_soft_descriptor\":\"33\",\n  \"billing_address\": {\n    \"phone\": \"+1-541-754-3010\"\n  },\n  \"order\": {\n    \"id\": \"iiii09052031MMMM01\"\n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments"
+							]
+						},
+						"description": "Create a new payment"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Create Charge MEX",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// postman.setEnvironmentVariable(\"idempotency_key\", Math.random());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "COM.JAGONZALEZN.businessmexico",
+								"type": "text"
+							},
+							{
+								"key": "private_key",
+								"value": "04bf619a-dcef-46fa-952e-4c4658cf50d3",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0",
+								"type": "text"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}",
+								"type": "text"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reconciliation_id\": \"Mexnzalezn9599XJ62\",\n    \"payment_method\": {\n        \"credit_card_cvv\": \"777\",\n        \"type\": \"tokenized\",\n        \"token\": \"ac6d49fb-a058-403d-97e1-597e452df9ec\"\n    } \n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments/ca923e78-c5e5-42f3-b985-ed41f46342f9/charges",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments",
+								"ca923e78-c5e5-42f3-b985-ed41f46342f9",
+								"charges"
+							]
+						},
+						"description": "Create a new charge"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Create Charge COL",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// postman.setEnvironmentVariable(\"idempotency_key\", Math.random());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "COM.JAGONZALEZN.businesscolombia",
+								"type": "text"
+							},
+							{
+								"key": "private_key",
+								"value": "c286d8a8-5e37-4a0d-b752-3c240161498a",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0",
+								"type": "text"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}",
+								"type": "text"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reconciliation_id\": \"CLjagonzalezn99435344323\",\n    \"payment_method\": {\n        \"credit_card_cvv\": \"777\",\n        \"type\": \"tokenized\",\n        \"token\": \"da9f1775-a67a-4019-8501-50029307d7ef\"\n    } \n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments/92660fb8-da77-4ac4-99e9-ea207bed7f5e/charges",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments",
+								"92660fb8-da77-4ac4-99e9-ea207bed7f5e",
+								"charges"
+							]
+						},
+						"description": "Create a new charge"
+					},
+					"response": []
+				},
+				{
+					"name": "4. Create Refund MEX",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "COM.JAGONZALEZN.businessmexico",
+								"type": "text"
+							},
+							{
+								"key": "private_key",
+								"value": "04bf619a-dcef-46fa-952e-4c4658cf50d3",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0",
+								"type": "text"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}",
+								"type": "text"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reconciliation_id\": \"3gonzalezn977\",\r\n    \"amount\":30000,\r\n    \"capture_id\":\"wonzaleznCapture977\",\r\n    \"refund_reason\":\"Test\",\r\n    \"additional_details\": {\r\n    \"property1\": \"The details you specify 1\",\r\n    \"property2\": \"The details you specify 2\"\r\n    }\r\n     \r\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments/ca923e78-c5e5-42f3-b985-ed41f46342f9/refunds",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments",
+								"ca923e78-c5e5-42f3-b985-ed41f46342f9",
+								"refunds"
+							]
+						},
+						"description": "Create a refund"
+					},
+					"response": []
+				},
+				{
+					"name": "4. Create Refund COL",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "COM.JAGONZALEZN.businesscolombia",
+								"type": "text"
+							},
+							{
+								"key": "private_key",
+								"value": "c286d8a8-5e37-4a0d-b752-3c240161498a",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0",
+								"type": "text"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}",
+								"type": "text"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reconciliation_id\": \"2jagonzalezn97\",\r\n    \"amount\":55555,\r\n    \"capture_id\":\"2jagonzaleznCapture97\",\r\n    \"refund_reason\":\"Test\",\r\n    \"additional_details\": {\r\n    \"property1\": \"The details you specify 1\",\r\n    \"property2\": \"The details you specify 2\"\r\n    }\r\n     \r\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments/92660fb8-da77-4ac4-99e9-ea207bed7f5e/refunds",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments",
+								"92660fb8-da77-4ac4-99e9-ea207bed7f5e",
+								"refunds"
+							]
+						},
+						"description": "Create a refund"
+					},
+					"response": []
+				}
+			],
+			"description": "A refund allows you to cancel or undo a sale and return the charged amount to the customer."
+		},
+		{
+			"name": "Reusing Card Information",
+			"item": [
+				{
+					"name": "1. Create Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "{{app_id}}"
+							},
+							{
+								"key": "public_key",
+								"value": "{{public_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token_type\": \"credit_card\",\n  \"credit_card_cvv\": \"123\",\n  \"card_number\": \"4111111111111111\",\n  \"expiration_date\": \"10/29\",\n  \"holder_name\": \"John Mark\",\n  \"billing_address\": {\n    \"country\": \"USA\",\n    \"state\": \"NY\",\n    \"city\": \"NYC\",\n    \"line1\": \"fifth avenue 10th\"\n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/tokens",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"tokens"
+							]
+						},
+						"description": "Create a new payment token"
+					},
+					"response": []
+				},
+				{
+					"name": "2. Create Customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"if (jsonData.category != \"api_request_error\") {",
+									"postman.setEnvironmentVariable(\"customerId\", jsonData.id);}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "{{app_id}}"
+							},
+							{
+								"key": "private_key",
+								"value": "{{private_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"customer_reference\": \"{{$randomInt}}\",\n      \"email\": \"john@travolta.com\"\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/customers",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"customers"
+							]
+						},
+						"description": "Create a new customer"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Store the Token in the Customer Object",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "{{app_id}}"
+							},
+							{
+								"key": "private_key",
+								"value": "{{private_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "test"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/customers/{{customerId}}/payment-methods/{{token}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"customers",
+								"{{customerId}}",
+								"payment-methods",
+								"{{token}}"
+							]
+						},
+						"description": "Associate a token with a customer"
+					},
+					"response": []
+				},
+				{
+					"name": "4. Retrieve Customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "{{app_id}}"
+							},
+							{
+								"key": "private_key",
+								"value": "{{private_key}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{idempotency_key}}"
+							}
+						],
+						"url": {
+							"raw": "https://api.paymentsos.com/customers/{{customerId}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"customers",
+								"{{customerId}}"
+							]
+						},
+						"description": "Gets a customer's data"
+					},
+					"response": []
+				}
+			],
+			"description": "PaymentsOS allows you to save a customer's card information, so that customers do not need to re-enter their payment details each time they want to initiate a transaction on your site."
+		},
+		{
+			"name": "JAGONZALEZN-Alternative Payment Methods",
+			"item": [
+				{
+					"name": "2. Create Payment COL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"paymentid\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "COM.JAGONZALEZN.businesscolombia"
+							},
+							{
+								"key": "private_key",
+								"value": "c286d8a8-5e37-4a0d-b752-3c240161498a"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 5555555,\n  \"currency\": \"COP\"\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments"
+							]
+						},
+						"description": "Create a new payment"
+					},
+					"response": []
+				},
+				{
+					"name": "2. Create Payment MEX",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"paymentid\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "COM.JAGONZALEZN.businessmexico"
+							},
+							{
+								"key": "private_key",
+								"value": "04bf619a-dcef-46fa-952e-4c4658cf50d3"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"amount\": 4097,\n  \"currency\": \"USD\"\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments"
+							]
+						},
+						"description": "Create a new payment"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Create Charge COL",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "COM.JAGONZALEZN.businesscolombia"
+							},
+							{
+								"key": "private_key",
+								"value": "c286d8a8-5e37-4a0d-b752-3c240161498a"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"reconciliation_id\": \"434\",\n  \"payment_method\": {\n       \"type\": \"untokenized\",\n        \"source_type\": \"cash\"    \n  },\n  \"channel_type\":\"mail_order\"\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments/f28ff48d-257a-46db-a10c-60c340b2aea2/charges",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments",
+								"f28ff48d-257a-46db-a10c-60c340b2aea2",
+								"charges"
+							]
+						},
+						"description": "Create a new charge"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Create Charge MEX",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "app_id",
+								"value": "COM.JAGONZALEZN.businessmexico"
+							},
+							{
+								"key": "private_key",
+								"value": "04bf619a-dcef-46fa-952e-4c4658cf50d3"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "api-version",
+								"value": "1.3.0"
+							},
+							{
+								"key": "x-payments-os-env",
+								"value": "{{x-payments-os-env}}"
+							},
+							{
+								"key": "idempotency_key",
+								"value": "{{$randomInt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reconciliation_id\": \"443432322311134\",\n  \"payment_method\": {\n    \"source_type\": \"ewallet\",\n    \"type\": \"untokenized\",\n    \"vendor\": \"applepay\",\n    \"additional_details\": {\n      \"untokenized_result_status\": \"succeed\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "https://api.paymentsos.com/payments/b5bdcb41-5e11-4d09-8dad-e4f9d90834b4/charges",
+							"protocol": "https",
+							"host": [
+								"api",
+								"paymentsos",
+								"com"
+							],
+							"path": [
+								"payments",
+								"b5bdcb41-5e11-4d09-8dad-e4f9d90834b4",
+								"charges"
+							]
+						},
+						"description": "Create a new charge"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
