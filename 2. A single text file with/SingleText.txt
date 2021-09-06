@@ -26,7 +26,7 @@ It should be used by companies that process credit or debit card data.
 found that is a blocker to start processing transactions tomorrow and if it is not
 solved, they will break the deal with us, what would you do?
 
-First, you have to have empathy and you must understand the customer's annoyance. What they call, putting ourselves in his shoes. For this, 
+First, you must have empathy and you must understand the customer's annoyance.(putting ourselves in their shoes). For this, 
 I would attend their complaint in a polite way and always trying to maintain a constructive dialogue.
 
 Second, we have to check if the clauses and the ANS allow breaking the contract due to this kind of problems. Always we  have to check the contracts and ANS
